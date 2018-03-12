@@ -24,6 +24,8 @@ SOFTWARE.
 package versioned
 
 import (
+	kcodecv1 "github.com/dbenque/kcodec/pkg/client/clientset/versioned/typed/kcodec/v1"
+	kcodecv1ext "github.com/dbenque/kcodec/pkg/client/clientset/versioned/typed/kcodec/v1ext"
 	kcodecv2 "github.com/dbenque/kcodec/pkg/client/clientset/versioned/typed/kcodec/v2"
 	glog "github.com/golang/glog"
 	discovery "k8s.io/client-go/discovery"
@@ -33,6 +35,8 @@ import (
 
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
+	KcodecV1() kcodecv1.KcodecV1Interface
+	KcodecV1ext() kcodecv1ext.KcodecV1extInterface
 	KcodecV2() kcodecv2.KcodecV2Interface
 	// Deprecated: please explicitly pick a version if possible.
 	Kcodec() kcodecv2.KcodecV2Interface
@@ -42,7 +46,19 @@ type Interface interface {
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	kcodecV2 *kcodecv2.KcodecV2Client
+	kcodecV1    *kcodecv1.KcodecV1Client
+	kcodecV1ext *kcodecv1ext.KcodecV1extClient
+	kcodecV2    *kcodecv2.KcodecV2Client
+}
+
+// KcodecV1 retrieves the KcodecV1Client
+func (c *Clientset) KcodecV1() kcodecv1.KcodecV1Interface {
+	return c.kcodecV1
+}
+
+// KcodecV1ext retrieves the KcodecV1extClient
+func (c *Clientset) KcodecV1ext() kcodecv1ext.KcodecV1extInterface {
+	return c.kcodecV1ext
 }
 
 // KcodecV2 retrieves the KcodecV2Client
@@ -72,6 +88,14 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	}
 	var cs Clientset
 	var err error
+	cs.kcodecV1, err = kcodecv1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
+	cs.kcodecV1ext, err = kcodecv1ext.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.kcodecV2, err = kcodecv2.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -89,6 +113,8 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 // panics if there is an error in the config.
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
+	cs.kcodecV1 = kcodecv1.NewForConfigOrDie(c)
+	cs.kcodecV1ext = kcodecv1ext.NewForConfigOrDie(c)
 	cs.kcodecV2 = kcodecv2.NewForConfigOrDie(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
@@ -98,6 +124,8 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
+	cs.kcodecV1 = kcodecv1.New(c)
+	cs.kcodecV1ext = kcodecv1ext.New(c)
 	cs.kcodecV2 = kcodecv2.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)

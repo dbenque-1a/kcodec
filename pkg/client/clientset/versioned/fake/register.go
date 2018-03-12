@@ -24,6 +24,8 @@ SOFTWARE.
 package fake
 
 import (
+	kcodecv1 "github.com/dbenque/kcodec/pkg/api/kcodec/v1"
+	kcodecv1ext "github.com/dbenque/kcodec/pkg/api/kcodec/v1ext"
 	kcodecv2 "github.com/dbenque/kcodec/pkg/api/kcodec/v2"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -55,6 +57,8 @@ func init() {
 // After this, RawExtensions in Kubernetes types will serialize kube-aggregator types
 // correctly.
 func AddToScheme(scheme *runtime.Scheme) {
+	kcodecv1.AddToScheme(scheme)
+	kcodecv1ext.AddToScheme(scheme)
 	kcodecv2.AddToScheme(scheme)
 
 }

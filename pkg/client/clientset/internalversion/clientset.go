@@ -34,6 +34,8 @@ import (
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
 	Kcodec() kcodecinternalversion.KcodecInterface
+	Kcodec() kcodecinternalversion.KcodecInterface
+	Kcodec() kcodecinternalversion.KcodecInterface
 }
 
 // Clientset contains the clients for groups. Each group has exactly one
@@ -41,6 +43,18 @@ type Interface interface {
 type Clientset struct {
 	*discovery.DiscoveryClient
 	kcodec *kcodecinternalversion.KcodecClient
+	kcodec *kcodecinternalversion.KcodecClient
+	kcodec *kcodecinternalversion.KcodecClient
+}
+
+// Kcodec retrieves the KcodecClient
+func (c *Clientset) Kcodec() kcodecinternalversion.KcodecInterface {
+	return c.kcodec
+}
+
+// Kcodec retrieves the KcodecClient
+func (c *Clientset) Kcodec() kcodecinternalversion.KcodecInterface {
+	return c.kcodec
 }
 
 // Kcodec retrieves the KcodecClient
@@ -68,6 +82,14 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.kcodec, err = kcodecinternalversion.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
+	cs.kcodec, err = kcodecinternalversion.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 
 	cs.DiscoveryClient, err = discovery.NewDiscoveryClientForConfig(&configShallowCopy)
 	if err != nil {
@@ -82,6 +104,8 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
 	cs.kcodec = kcodecinternalversion.NewForConfigOrDie(c)
+	cs.kcodec = kcodecinternalversion.NewForConfigOrDie(c)
+	cs.kcodec = kcodecinternalversion.NewForConfigOrDie(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
 	return &cs
@@ -90,6 +114,8 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
+	cs.kcodec = kcodecinternalversion.New(c)
+	cs.kcodec = kcodecinternalversion.New(c)
 	cs.kcodec = kcodecinternalversion.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)

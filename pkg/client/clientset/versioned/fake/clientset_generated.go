@@ -25,6 +25,10 @@ package fake
 
 import (
 	clientset "github.com/dbenque/kcodec/pkg/client/clientset/versioned"
+	kcodecv1 "github.com/dbenque/kcodec/pkg/client/clientset/versioned/typed/kcodec/v1"
+	fakekcodecv1 "github.com/dbenque/kcodec/pkg/client/clientset/versioned/typed/kcodec/v1/fake"
+	kcodecv1ext "github.com/dbenque/kcodec/pkg/client/clientset/versioned/typed/kcodec/v1ext"
+	fakekcodecv1ext "github.com/dbenque/kcodec/pkg/client/clientset/versioned/typed/kcodec/v1ext/fake"
 	kcodecv2 "github.com/dbenque/kcodec/pkg/client/clientset/versioned/typed/kcodec/v2"
 	fakekcodecv2 "github.com/dbenque/kcodec/pkg/client/clientset/versioned/typed/kcodec/v2/fake"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -66,6 +70,16 @@ func (c *Clientset) Discovery() discovery.DiscoveryInterface {
 }
 
 var _ clientset.Interface = &Clientset{}
+
+// KcodecV1 retrieves the KcodecV1Client
+func (c *Clientset) KcodecV1() kcodecv1.KcodecV1Interface {
+	return &fakekcodecv1.FakeKcodecV1{Fake: &c.Fake}
+}
+
+// KcodecV1ext retrieves the KcodecV1extClient
+func (c *Clientset) KcodecV1ext() kcodecv1ext.KcodecV1extInterface {
+	return &fakekcodecv1ext.FakeKcodecV1ext{Fake: &c.Fake}
+}
 
 // KcodecV2 retrieves the KcodecV2Client
 func (c *Clientset) KcodecV2() kcodecv2.KcodecV2Interface {

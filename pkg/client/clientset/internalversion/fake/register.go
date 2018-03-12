@@ -56,5 +56,7 @@ func init() {
 // correctly.
 func AddToScheme(scheme *runtime.Scheme) {
 	kcodecinternalversion.AddToScheme(scheme)
+	kcodecinternalversion.AddToScheme(scheme)
+	kcodecinternalversion.AddToScheme(scheme)
 
 }

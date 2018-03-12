@@ -71,3 +71,13 @@ var _ clientset.Interface = &Clientset{}
 func (c *Clientset) Kcodec() kcodecinternalversion.KcodecInterface {
 	return &fakekcodecinternalversion.FakeKcodec{Fake: &c.Fake}
 }
+
+// Kcodec retrieves the KcodecClient
+func (c *Clientset) Kcodec() kcodecinternalversion.KcodecInterface {
+	return &fakekcodecinternalversion.FakeKcodec{Fake: &c.Fake}
+}
+
+// Kcodec retrieves the KcodecClient
+func (c *Clientset) Kcodec() kcodecinternalversion.KcodecInterface {
+	return &fakekcodecinternalversion.FakeKcodec{Fake: &c.Fake}
+}

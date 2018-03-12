@@ -18,5 +18,5 @@ echo "--- Generating Internal Groups"
     github.com/dbenque/kcodec/pkg/client \
     github.com/dbenque/kcodec/pkg/api \
     github.com/dbenque/kcodec/pkg/api \
-    "kcodec:v2" \
+    "kcodec:v1 kcodec:v1ext kcodec:v2" \
     --go-header-file ./hack/custom-boilerplate.go.txt

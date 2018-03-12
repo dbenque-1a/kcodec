@@ -28,6 +28,8 @@ package externalversions
 
 import (
 	"fmt"
+	v1 "github.com/dbenque/kcodec/pkg/api/kcodec/v1"
+	v1ext "github.com/dbenque/kcodec/pkg/api/kcodec/v1ext"
 	v2 "github.com/dbenque/kcodec/pkg/api/kcodec/v2"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
@@ -59,7 +61,15 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=kcodec, Version=v2
+	// Group=kcodec, Version=v1
+	case v1.SchemeGroupVersion.WithResource("items"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Kcodec().V1().Items().Informer()}, nil
+
+		// Group=kcodec, Version=v1ext
+	case v1ext.SchemeGroupVersion.WithResource("items"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Kcodec().V1ext().Items().Informer()}, nil
+
+		// Group=kcodec, Version=v2
 	case v2.SchemeGroupVersion.WithResource("items"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Kcodec().V2().Items().Informer()}, nil
 
