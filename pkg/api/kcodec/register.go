@@ -19,9 +19,14 @@ package kcodec
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/runtime/serializer"
 )
 
-var SchemeGroupVersion = schema.GroupVersion{Group: "kcodec", Version: runtime.APIVersionInternal}
+const GroupName = "kcodec"
+
+var Scheme = runtime.NewScheme()
+var Codecs = serializer.NewCodecFactory(Scheme)
+var SchemeGroupVersion = schema.GroupVersion{Group: GroupName, Version: runtime.APIVersionInternal}
 
 var (
 	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)

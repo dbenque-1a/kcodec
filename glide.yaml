@@ -1,12 +1,21 @@
-package: github.com/amadeusitgroup/podkubervisor
+package: github.com/dbenque/kcodec
 import:
+# - package: k8s.io/client-go
+#   version: v6.0.0
+# - package: k8s.io/code-generator
+#   version: kubernetes-1.9.3
+# - package: k8s.io/gengo
+# - package: golang.org/x/tools
+#   subpackages:
+#   - imports
+# - package: github.com/spf13/pflag
+# - package: go.uber.org/zap
+#
+- package: k8s.io/code-generator
+  version: kubernetes-1.9.0
 - package: k8s.io/client-go
   version: v6.0.0
-- package: k8s.io/code-generator
-  version: kubernetes-1.9.3
-- package: k8s.io/gengo
-- package: golang.org/x/tools
-  subpackages:
-  - imports
-- package: github.com/spf13/pflag
-- package: go.uber.org/zap
+- package: k8s.io/apimachinery
+  version: kubernetes-1.9.0
+- package: k8s.io/api
+  version: kubernetes-1.9.0
